@@ -1,6 +1,6 @@
-# exit README
+# vscode-elixir-exacto-knife README
 
-This is the README for your extension "exit". After writing up a brief description, we recommend including the following sections.
+This is the README for your extension "vscode-elixir-exacto-knife". After writing up a brief description, we recommend including the following sections.
 
 ## Features
 

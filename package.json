@@ -1,6 +1,6 @@
 {
-  "name": "exit",
-	"displayName": "exit",
+	"name": "vscode-elixir-exacto-knife",
+	"displayName": "vscode-elixir-exacto-knife",
 	"description": "helping devs write elixir code",
 	"version": "0.0.1",
 	"engines": {
@@ -10,16 +10,72 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:exit.helloWorld"
+		"onCommand:extension.toggleTestFile",
+		"onCommand:extension.runTestFile",
+		"onCommand:extension.runFocusedTest",
+		"onCommand:extension.runLastTestAgain"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"languages": [
+			{
+				"id": "elixir",
+				"extensions": [
+					".ex",
+					".exs"
+				]
+			}
+		],
 		"commands": [
 			{
-				"command": "exit.helloWorld",
-				"title": "Hello World"
+				"command": "vscode-elixir-exacto-knife.toggleTestFile",
+				"title": "Toggle Test File"
+			},
+			{
+				"command": "vscode-elixir-exacto-knife.runTestFile",
+				"title": "Run Test File"
+			},
+			{
+				"command": "vscode-elixir-exacto-knife.runFocusedTest",
+				"title": "Run Focused Test"
+			},
+			{
+				"command": "vscode-elixir-exacto-knife.runLastTestAgain",
+				"title": "Run Last Test Again"
 			}
-		]
+		],
+		"keybindings": [
+			{
+				"command": "extension.toggleTestFile",
+				"key": "ctrl+shift+t",
+				"when": "editorLangId == 'elixir'"
+			},
+			{
+				"command": "extension.runTestFile",
+				"key": "ctrl+shift+r",
+				"when": "editorLangId == 'elixir'"
+			},
+			{
+				"command": "extension.runFocusedTest",
+				"key": "ctrl+r",
+				"when": "editorLangId == 'elixir'"
+			},
+			{
+				"command": "extension.runLastTestAgain",
+				"key": "cmd+y",
+				"when": "editorLangId == 'elixir'"
+			}
+		],
+		"configuration": {
+			"title": "vscode-elixir-exacto-knife-run-test",
+			"properties": {
+					"vscode-elixir-exacto-knife-run-test.custom-command": {
+							"type": "string",
+							"default": "mix test",
+							"description": "Command to run exunit. Example: \"mix test\""
+					}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
