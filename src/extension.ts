@@ -1,7 +1,8 @@
+import { open } from 'fs';
 import * as vscode from 'vscode';
 
 let terminals: { [key: string]: any } = {};
-const TERMINAL_NAME = "ExUnit Run File";
+const TERMINAL_NAME = "Elixir Refactorings";
 let lastExecuted = "";
 
 const EXUNIT_COMMAND_KEY = "vscode-elixir-refactoring.exunit-command";
@@ -12,11 +13,11 @@ function getFilename() {
 }
 
 function getAsRelativePath(): string {
-	if (!vscode.workspace.workspaceFolders) {
-		return "";
-	}
+  if (!vscode.workspace.workspaceFolders) {
+    return "";
+  }
 
-	const rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
+  const rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
   const rootFile: string = getFilename()?.replace(rootPath, "") || "";
   const isLib: boolean = /^\/lib\//.test(rootFile);
   const isTest: boolean = /^\/test\//.test(rootFile);
@@ -32,31 +33,21 @@ function getAsRelativePath(): string {
   return "";
 }
 
-function getFilePath(): string {
-  return getAsRelativePath().replace(
-    /^(lib\/)|(\.ex)|(\.exs)|(_test.exs)|(test\/)/gi,
-    ""
-  );
+function getFileUnderTestPath() {
+  return getAsRelativePath()
+    .replace(/^test\//, "lib/")
+    .replace("_test", "")
+    .replace(".exs", ".ex");
 }
 
 function getTestFilePath() {
-  return `test/${getFilePath()}_test.exs`;
-}
-
-function getOriginalFile(): string {
-  return getTestFilePath().replace(/test\/|(_test)/g, "").replace(".exs", ".ex");
+  return getAsRelativePath()
+    .replace(/^lib\//, "test/")
+    .replace(".ex", "_test.exs");
 }
 
 function isTestFolder() {
   return getFilename()?.indexOf("/test/") !== -1;
-}
-
-function getCurrentFilePath() {
-  if (isTestFolder()) {
-		return getTestFilePath();
-	} else {
-		return getOriginalFile();
-	}
 }
 
 function getTerminal() {
@@ -82,12 +73,19 @@ function execCommand(commandText: string) {
   lastExecuted = commandText;
 }
 
-async function toggleTestFile() {
-  let uri = vscode.Uri.file(
-    `${vscode.workspace.rootPath}/${getCurrentFilePath()}`
-  );
-
+async function openRelativePath(path: string) {
+  const uri = vscode.Uri.file(`${vscode.workspace.rootPath}/${path}`);
   await vscode.commands.executeCommand("vscode.open", uri);
+}
+
+async function toggleTestFile() {
+  console.log(`relative path = ${getAsRelativePath()}`);
+  if (isTestFolder()) {
+    openRelativePath(getFileUnderTestPath());
+
+  } else {
+    openRelativePath(getTestFilePath());
+  }
 }
 
 function clearTerminal() {
@@ -105,15 +103,12 @@ function getExFactorCommand(): string {
 
 function runTestFile() {
   let testFilename = getTestFilePath();
-  let commandText = `${getExUnitCommand()} ${testFilename}`;
-
-  execCommand(commandText);
+  execCommand(`${getExUnitCommand()} ${testFilename}`);
 }
 
 function runFocusedTest() {
   let testFilename = getTestFilePath();
-  let commandText = `${getExUnitCommand()} ${testFilename}:${getActiveLine()}`;
-  execCommand(commandText);
+  execCommand(`${getExUnitCommand()} ${testFilename}:${getActiveLine()}`);
 }
 
 function runLastTestAgain() {
@@ -134,19 +129,19 @@ function performRefactoring(name: string) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "vscode-elixir-refactoring" is now active!');
+  console.log('Congratulations, your extension "vscode-elixir-refactoring" is now active!');
 
-	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.toggleTestFile', toggleTestFile)
-	);
+  context.subscriptions.push(
+    vscode.commands.registerCommand('extension.toggleTestFile', toggleTestFile)
+  );
 
-	context.subscriptions.push(
+  context.subscriptions.push(
     vscode.commands.registerCommand('extension.runTestFile', () => {
       clearTerminal().then(() => runTestFile());
     })
   );
 
-	context.subscriptions.push(
+  context.subscriptions.push(
     vscode.commands.registerCommand('extension.runFocusedTest', () => {
       clearTerminal().then(() => {
         if (isTestFolder()) {
@@ -165,13 +160,13 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // refactorings
-  
+
   context.subscriptions.push(
     vscode.commands.registerCommand('extension.consolidateAliases', () => {
       performRefactoring("consolidate_aliases");
     })
   );
-  
+
   context.subscriptions.push(
     vscode.commands.registerCommand('extension.expandAliases', () => {
       performRefactoring("expand_aliases");
@@ -179,7 +174,7 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-export function deactivate() {}
+export function deactivate() { }
 
 vscode.window.onDidCloseTerminal((terminal: vscode.Terminal) => {
   if (terminals[terminal.name]) {

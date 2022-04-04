@@ -9,6 +9,8 @@ In particular, we hope to start enabling simple refactorings with [exacto knife]
 * Run test file
 * Run focused test
 * Toggle test file
+* Consolidate Aliases
+* Expand Aliases
 
 ## Requirements
 
@@ -53,6 +55,13 @@ Added features X, Y, and Z.
 * npm run compile
 * open in vscode and hit F5
 
+### Package and testing extension
+
+* npm run package
+* `code --install-extension vscode-elixir-refactoring-0.0.1.vsix`
+
 ### Test
 
 * npm test
+
+### 

@@ -1,8 +1,18 @@
 {
 	"name": "vscode-elixir-refactoring",
 	"displayName": "Elixir Refactoring",
-	"description": "helping devs write elixir code",
+	"description": "Helping devs write elixir code",
 	"version": "0.0.1",
+	"author": "Jeremy Lightsmith <jeremy.lightsmith@gmail.com>",
+	"license": "MIT",
+  "homepage": "https://github.com/jeremylightsmith/vscode-elixir-refactoring",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring/issues"
+  },
 	"engines": {
 		"vscode": "^1.66.0"
 	},
@@ -31,27 +41,27 @@
 		"commands": [
 			{
 				"command": "extension.toggleTestFile",
-				"title": "Toggle Test File"
+				"title": "Elixir: Toggle Test File"
 			},
 			{
 				"command": "extension.runTestFile",
-				"title": "Run Test File"
+				"title": "Elixir: Run Test File"
 			},
 			{
 				"command": "extension.runFocusedTest",
-				"title": "Run Focused Test"
+				"title": "Elixir: Run Focused Test"
 			},
 			{
 				"command": "extension.runLastTestAgain",
-				"title": "Run Last Test Again"
+				"title": "Elixir: Run Last Test Again"
 			},
 			{
 				"command": "extension.expandAliases",
-				"title": "Expand Aliases"
+				"title": "Elixir: Expand Aliases"
 			},
 			{
 				"command": "extension.consolidateAliases",
-				"title": "Consolidate Aliases"
+				"title": "Elixir: Consolidate Aliases"
 			}
 		],
 		"keybindings": [
@@ -98,7 +108,11 @@
 		"watch": "tsc -watch -p ./",
 		"pretest": "npm run compile && npm run lint",
 		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"test": "node ./out/test/runTest.js",
+		"reinstall": "rimraf node_modules package-lock.json && npm install",
+		"clean": "rimraf out vscode-*.vsix",
+    "package": "vsce package",
+    "publish": "vsce publish"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.66.0",
