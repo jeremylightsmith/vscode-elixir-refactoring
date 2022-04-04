@@ -1,4 +1,3 @@
-import { open } from 'fs';
 import * as vscode from 'vscode';
 
 let terminals: { [key: string]: any } = {};
@@ -12,38 +11,32 @@ function getFilename() {
   return vscode.window.activeTextEditor?.document.uri.path;
 }
 
+function getRootDir() {
+  return vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.fsPath;
+}
+
 function getAsRelativePath(): string {
-  if (!vscode.workspace.workspaceFolders) {
+  const root = getRootDir()
+  if (!root) {
     return "";
   }
 
-  const rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-  const rootFile: string = getFilename()?.replace(rootPath, "") || "";
-  const isLib: boolean = /^\/lib\//.test(rootFile);
-  const isTest: boolean = /^\/test\//.test(rootFile);
+  const relativePath: string = getFilename()?.replace(root, "") || "";
 
-  if (isTest) {
-    const indexOfTestFolder: number = rootFile.indexOf("/test/");
-    return rootFile.substr(indexOfTestFolder + 1);
-  } else if (isLib) {
-    const indexOfLibFolder: number = rootFile.indexOf("/lib/");
-    return rootFile.substr(indexOfLibFolder + 1);
+  if (/^\/lib\//.test(relativePath)) {
+    return relativePath.substring(1);
+  } else if (/^\/test\//.test(relativePath)) {
+    return relativePath.substring(1);
+  } else {
+    return "";
   }
-
-  return "";
-}
-
-function getFileUnderTestPath() {
-  return getAsRelativePath()
-    .replace(/^test\//, "lib/")
-    .replace("_test", "")
-    .replace(".exs", ".ex");
 }
 
 function getTestFilePath() {
-  return getAsRelativePath()
-    .replace(/^lib\//, "test/")
-    .replace(".ex", "_test.exs");
+  const neutralFile = getAsRelativePath()
+    .replace(/(^lib\/|^test\/|_test.exs$|.ex$)/g, "");
+
+  return `test/${neutralFile}_test.exs`;
 }
 
 function isTestFolder() {
@@ -68,20 +61,22 @@ function execCommand(commandText: string) {
   let terminal = getTerminal();
 
   terminal.sendText(commandText);
-  terminal.show();
+  terminal.show(true);
 
   lastExecuted = commandText;
 }
 
 async function openRelativePath(path: string) {
-  const uri = vscode.Uri.file(`${vscode.workspace.rootPath}/${path}`);
+  const uri = vscode.Uri.file(`${getRootDir()}/${path}`);
   await vscode.commands.executeCommand("vscode.open", uri);
 }
 
 async function toggleTestFile() {
-  console.log(`relative path = ${getAsRelativePath()}`);
   if (isTestFolder()) {
-    openRelativePath(getFileUnderTestPath());
+    openRelativePath(getAsRelativePath()
+      .replace(/^test\//, "lib/")
+      .replace("_test", "")
+      .replace(".exs", ".ex"));
 
   } else {
     openRelativePath(getTestFilePath());
@@ -129,8 +124,6 @@ function performRefactoring(name: string) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log('Congratulations, your extension "vscode-elixir-refactoring" is now active!');
-
   context.subscriptions.push(
     vscode.commands.registerCommand('extension.toggleTestFile', toggleTestFile)
   );
