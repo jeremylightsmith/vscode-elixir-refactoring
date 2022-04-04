@@ -112,7 +112,8 @@
 		"reinstall": "rimraf node_modules package-lock.json && npm install",
 		"clean": "rimraf out vscode-*.vsix",
     "package": "vsce package",
-    "publish": "vsce publish"
+    "publish": "vsce publish",
+    "install": "vsce package && code --install-extension vscode-elixir-refactoring-0.0.1.vsix"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.66.0",
