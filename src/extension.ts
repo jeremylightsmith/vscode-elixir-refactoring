@@ -5,7 +5,7 @@ const TERMINAL_NAME = "Elixir Refactorings";
 let lastExecuted = "";
 
 const EXUNIT_COMMAND_KEY = "vscode-elixir-refactoring.exunit-command";
-const EXFACTOR_COMMAND_KEY = "vscode-elixir-refactoring.exfactor-command";
+const EXACTO_KNIFE_COMMAND_KEY = "vscode-elixir-refactoring.exacto-knife-command";
 
 function getFilename() {
   return vscode.window.activeTextEditor?.document.uri.path;
@@ -92,8 +92,8 @@ function getExUnitCommand(): string {
   return vscode.workspace.getConfiguration().get(EXUNIT_COMMAND_KEY) as string;
 }
 
-function getExFactorCommand(): string {
-  return vscode.workspace.getConfiguration().get(EXFACTOR_COMMAND_KEY) as string;
+function getRefactorCommand(): string {
+  return vscode.workspace.getConfiguration().get(EXACTO_KNIFE_COMMAND_KEY) as string;
 }
 
 function runTestFile() {
@@ -120,7 +120,7 @@ function performRefactoring(name: string) {
   }
 
   vscode.window.activeTextEditor.document.save();
-  execCommand(`${getExFactorCommand()} ${name} ${getFilename()}`);
+  execCommand(`${getRefactorCommand()} ${name} ${getFilename()}`);
 }
 
 export function activate(context: vscode.ExtensionContext) {

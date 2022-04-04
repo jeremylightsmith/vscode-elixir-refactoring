@@ -89,10 +89,10 @@
 		"configuration": {
 			"title": "Elixir Refactorings",
 			"properties": {
-				"vscode-elixir-refactoring.exfactor-command": {
+				"vscode-elixir-refactoring.exacto-knife-command": {
 					"type": "string",
-					"default": "ex_factor",
-					"description": "Command to run ex_factor (you'll need to install this somewhere). Example: \"ex_factor\""
+					"default": "mix refactor",
+					"description": "Command to run exacto_knife. (you'll need to install exacto_knife in your project). Example: \"mix refactor\""
 				},
 				"vscode-elixir-refactoring.exunit-command": {
 					"type": "string",
