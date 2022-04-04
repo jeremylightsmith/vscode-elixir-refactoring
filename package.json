@@ -1,6 +1,6 @@
 {
-	"name": "vscode-elixir-exacto-knife",
-	"displayName": "vscode-elixir-exacto-knife",
+	"name": "vscode-elixir-refactoring",
+	"displayName": "Elixir Refactoring",
 	"description": "helping devs write elixir code",
 	"version": "0.0.1",
 	"engines": {
@@ -13,7 +13,9 @@
 		"onCommand:extension.toggleTestFile",
 		"onCommand:extension.runTestFile",
 		"onCommand:extension.runFocusedTest",
-		"onCommand:extension.runLastTestAgain"
+		"onCommand:extension.runLastTestAgain",
+		"onCommand:extension.expandAliases",
+		"onCommand:extension.consolidateAliases"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -28,20 +30,28 @@
 		],
 		"commands": [
 			{
-				"command": "vscode-elixir-exacto-knife.toggleTestFile",
+				"command": "extension.toggleTestFile",
 				"title": "Toggle Test File"
 			},
 			{
-				"command": "vscode-elixir-exacto-knife.runTestFile",
+				"command": "extension.runTestFile",
 				"title": "Run Test File"
 			},
 			{
-				"command": "vscode-elixir-exacto-knife.runFocusedTest",
+				"command": "extension.runFocusedTest",
 				"title": "Run Focused Test"
 			},
 			{
-				"command": "vscode-elixir-exacto-knife.runLastTestAgain",
+				"command": "extension.runLastTestAgain",
 				"title": "Run Last Test Again"
+			},
+			{
+				"command": "extension.expandAliases",
+				"title": "Expand Aliases"
+			},
+			{
+				"command": "extension.consolidateAliases",
+				"title": "Consolidate Aliases"
 			}
 		],
 		"keybindings": [
@@ -67,13 +77,18 @@
 			}
 		],
 		"configuration": {
-			"title": "vscode-elixir-exacto-knife-run-test",
+			"title": "Elixir Refactorings",
 			"properties": {
-					"vscode-elixir-exacto-knife-run-test.custom-command": {
-							"type": "string",
-							"default": "mix test",
-							"description": "Command to run exunit. Example: \"mix test\""
-					}
+				"vscode-elixir-refactoring.exfactor-command": {
+					"type": "string",
+					"default": "ex_factor",
+					"description": "Command to run ex_factor (you'll need to install this somewhere). Example: \"ex_factor\""
+				},
+				"vscode-elixir-refactoring.exunit-command": {
+					"type": "string",
+					"default": "mix test",
+					"description": "Command to run exunit. Example: \"mix test\""
+				}
 			}
 		}
 	},

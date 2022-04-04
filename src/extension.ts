@@ -1,12 +1,11 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
 let terminals: { [key: string]: any } = {};
 const TERMINAL_NAME = "ExUnit Run File";
 let lastExecuted = "";
 
-const SETTINGS_EXUNIT_COMMAND_KEY = "vscode-elixir-exacto-knife.custom-command";
+const EXUNIT_COMMAND_KEY = "vscode-elixir-refactoring.exunit-command";
+const EXFACTOR_COMMAND_KEY = "vscode-elixir-refactoring.exfactor-command";
 
 function getFilename() {
   return vscode.window.activeTextEditor?.document.uri.path;
@@ -97,7 +96,11 @@ function clearTerminal() {
 }
 
 function getExUnitCommand(): string {
-  return "mix test"; // vscode.workspace.getConfiguration().get(SETTINGS_EXUNIT_COMMAND_KEY) as string;
+  return vscode.workspace.getConfiguration().get(EXUNIT_COMMAND_KEY) as string;
+}
+
+function getExFactorCommand(): string {
+  return vscode.workspace.getConfiguration().get(EXFACTOR_COMMAND_KEY) as string;
 }
 
 function runTestFile() {
@@ -121,21 +124,30 @@ function runLastTestAgain() {
   }
 }
 
+function performRefactoring(name: string) {
+  if (!vscode.window.activeTextEditor) {
+    return;
+  }
+
+  vscode.window.activeTextEditor.document.save();
+  execCommand(`${getExFactorCommand()} ${name} ${getFilename()}`);
+}
+
 export function activate(context: vscode.ExtensionContext) {
-	console.log('Congratulations, your extension "vscode-elixir-exacto-knife" is now active!');
+	console.log('Congratulations, your extension "vscode-elixir-refactoring" is now active!');
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand("extension.toggleTestFile", toggleTestFile)
+		vscode.commands.registerCommand('extension.toggleTestFile', toggleTestFile)
 	);
 
 	context.subscriptions.push(
-    vscode.commands.registerCommand("extension.runTestFile", () => {
+    vscode.commands.registerCommand('extension.runTestFile', () => {
       clearTerminal().then(() => runTestFile());
     })
   );
 
 	context.subscriptions.push(
-    vscode.commands.registerCommand("extension.runFocusedTest", () => {
+    vscode.commands.registerCommand('extension.runFocusedTest', () => {
       clearTerminal().then(() => {
         if (isTestFolder()) {
           runFocusedTest();
@@ -147,8 +159,22 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("extension.runLastTestAgain", () => {
+    vscode.commands.registerCommand('extension.runLastTestAgain', () => {
       clearTerminal().then(() => runLastTestAgain());
+    })
+  );
+
+  // refactorings
+  
+  context.subscriptions.push(
+    vscode.commands.registerCommand('extension.consolidateAliases', () => {
+      performRefactoring("consolidate_aliases");
+    })
+  );
+  
+  context.subscriptions.push(
+    vscode.commands.registerCommand('extension.expandAliases', () => {
+      performRefactoring("expand_aliases");
     })
   );
 }

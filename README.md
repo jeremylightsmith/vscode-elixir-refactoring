@@ -1,20 +1,18 @@
-# vscode-elixir-exacto-knife README
+# vscode-elixir-refactoring README
 
-This is the README for your extension "vscode-elixir-exacto-knife". After writing up a brief description, we recommend including the following sections.
+This is an VS Code extension to help with elixir dev.
+
+In particular, we hope to start enabling simple refactorings with [exacto knife](https://github.com/jeremylightsmith/exacto_knife).
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+* Run test file
+* Run focused test
+* Toggle test file
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+* Exacto knife
 
 ## Extension Settings
 
@@ -48,23 +46,13 @@ Fixed issue #.
 Added features X, Y, and Z.
 
 -----------------------------------------------------------------------------------------------------------
-## Following extension guidelines
+## Contributing
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+### Running the extension from source
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+* npm run compile
+* open in vscode and hit F5
 
-## Working with Markdown
+### Test
 
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+* npm test
