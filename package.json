@@ -4,6 +4,8 @@
 	"description": "Helping devs write elixir code",
 	"version": "0.0.1",
 	"author": "Jeremy Lightsmith <jeremy.lightsmith@gmail.com>",
+	"preview": false,
+	"publisher": "JeremyLightsmith",
 	"license": "MIT",
 	"homepage": "https://github.com/jeremylightsmith/vscode-elixir-refactoring",
 	"icon": "icon.png",
