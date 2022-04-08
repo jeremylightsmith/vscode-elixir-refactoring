@@ -62,6 +62,18 @@
 			{
 				"command": "extension.consolidateAliases",
 				"title": "Elixir: Consolidate Aliases"
+			},
+			{
+				"command": "extension.sortAliases",
+				"title": "Elixir: Sort Aliases"
+			},
+			{
+				"command": "extension.rename",
+				"title": "Elixir: Rename Variable"
+			},
+			{
+				"command": "extension.logTheEnvironment",
+				"title": "Elixir: Log the environment"
 			}
 		],
 		"keybindings": [
@@ -83,6 +95,11 @@
 			{
 				"command": "extension.runLastTestAgain",
 				"key": "cmd+y",
+				"when": "editorLangId == 'elixir'"
+			},
+			{
+				"command": "extension.rename",
+				"key": "shift+F6",
 				"when": "editorLangId == 'elixir'"
 			}
 		],

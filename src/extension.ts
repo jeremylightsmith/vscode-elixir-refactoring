@@ -16,17 +16,21 @@ function getRootDir() {
 }
 
 function getAsRelativePath(): string {
-  const root = getRootDir()
+  const root = getRootDir();
   if (!root) {
     return "";
   }
 
-  const relativePath: string = getFilename()?.replace(root, "") || "";
+  let relativePath: string = getFilename()?.replace(root, "") || "";
 
-  if (/^\/lib\//.test(relativePath)) {
-    return relativePath.substring(1);
-  } else if (/^\/test\//.test(relativePath)) {
-    return relativePath.substring(1);
+  if (/^\//.test(relativePath)) {
+    relativePath = relativePath.substring(1);
+  }
+
+  if (/^lib\//.test(relativePath)) {
+    return relativePath;
+  } else if (/^test\//.test(relativePath)) {
+    return relativePath;
   } else {
     return "";
   }
@@ -67,6 +71,7 @@ function execCommand(commandText: string) {
 }
 
 async function openRelativePath(path: string) {
+  // const uri = vscode.Uri.from({scheme: "vsls", path: `${getRootDir()}${path}`});
   const uri = vscode.Uri.file(`${getRootDir()}/${path}`);
   await vscode.commands.executeCommand("vscode.open", uri);
 }
@@ -115,12 +120,29 @@ function runLastTestAgain() {
 }
 
 function performRefactoring(name: string) {
-  if (!vscode.window.activeTextEditor) {
-    return;
-  }
+  if (!vscode.window.activeTextEditor) { return; }
 
   vscode.window.activeTextEditor.document.save();
   execCommand(`${getRefactorCommand()} ${name} ${getFilename()}`);
+}
+
+async function performRenameRefactoring() {
+  if (!vscode.window.activeTextEditor) { return; }
+
+  vscode.window.activeTextEditor.document.save();
+  const sel = vscode.window.activeTextEditor.selection.start;
+
+  const newName = await vscode.window.showInputBox({
+    placeHolder: "Rename",
+    prompt: "Enter the new name",
+    value: ""
+  });
+
+  if (newName === '') {
+    vscode.window.showErrorMessage('A search query is mandatory to execute this action');
+  } else if (newName !== undefined) {
+    execCommand(`${getRefactorCommand()} rename ${getFilename()} ${sel.line + 1} ${sel.character + 1} ${newName}`);
+  }
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -163,6 +185,31 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('extension.expandAliases', () => {
       performRefactoring("expand_aliases");
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('extension.sortAliases', () => {
+      performRefactoring("sort_aliases");
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('extension.rename', () => {
+      performRenameRefactoring();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('extension.logTheEnvironment', () => {
+      console.log("vscode.window.activeTextEditor", vscode.window.activeTextEditor)
+      console.log("vscode.window.activeTextEditor?.document.uri", vscode.window.activeTextEditor?.document.uri)
+      console.log("vscode.window.activeTextEditor?.document.uri.path", vscode.window.activeTextEditor?.document.uri.path)
+      console.log("vscode.workspace.workspaceFolders", vscode.workspace.workspaceFolders)
+      console.log("vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri", vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri)
+      console.log("vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.fsPath", vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders[0].uri.fsPath)
+      console.log("getAsRelativePath()", getAsRelativePath())
+      console.log("getTestFilePath()", getTestFilePath())
     })
   );
 }
