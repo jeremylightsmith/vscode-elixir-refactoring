@@ -2,7 +2,7 @@
 	"name": "vscode-elixir-refactoring",
 	"displayName": "Elixir Refactoring",
 	"description": "Helping devs write elixir code",
-	"version": "0.0.1",
+	"version": "0.1.2",
 	"author": "Jeremy Lightsmith <jeremy.lightsmith@gmail.com>",
 	"preview": false,
 	"publisher": "JeremyLightsmith",
@@ -135,7 +135,7 @@
 		"clean": "rimraf out vscode-*.vsix",
 		"package": "vsce package",
 		"publish": "vsce publish",
-		"install": "vsce package && code --install-extension vscode-elixir-refactoring-0.0.1.vsix"
+		"install": "vsce package && code --install-extension vscode-elixir-refactoring-0.1.2.vsix"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.66.0",
