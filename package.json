@@ -5,14 +5,14 @@
 	"version": "0.0.1",
 	"author": "Jeremy Lightsmith <jeremy.lightsmith@gmail.com>",
 	"license": "MIT",
-  "homepage": "https://github.com/jeremylightsmith/vscode-elixir-refactoring",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring.git"
-  },
-  "bugs": {
-    "url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring/issues"
-  },
+	"homepage": "https://github.com/jeremylightsmith/vscode-elixir-refactoring",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring.git"
+	},
+	"bugs": {
+		"url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring/issues"
+	},
 	"engines": {
 		"vscode": "^1.66.0"
 	},
@@ -25,7 +25,9 @@
 		"onCommand:extension.runFocusedTest",
 		"onCommand:extension.runLastTestAgain",
 		"onCommand:extension.expandAliases",
-		"onCommand:extension.consolidateAliases"
+		"onCommand:extension.consolidateAliases",
+		"onCommand:extension.sortAliases",
+		"onCommand:extension.rename"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -128,9 +130,9 @@
 		"test": "node ./out/test/runTest.js",
 		"reinstall": "rimraf node_modules package-lock.json && npm install",
 		"clean": "rimraf out vscode-*.vsix",
-    "package": "vsce package",
-    "publish": "vsce publish",
-    "install": "vsce package && code --install-extension vscode-elixir-refactoring-0.0.1.vsix"
+		"package": "vsce package",
+		"publish": "vsce publish",
+		"install": "vsce package && code --install-extension vscode-elixir-refactoring-0.0.1.vsix"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.66.0",
