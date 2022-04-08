@@ -6,6 +6,7 @@
 	"author": "Jeremy Lightsmith <jeremy.lightsmith@gmail.com>",
 	"license": "MIT",
 	"homepage": "https://github.com/jeremylightsmith/vscode-elixir-refactoring",
+	"icon": "icon.png",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/jeremylightsmith/vscode-elixir-refactoring.git"
