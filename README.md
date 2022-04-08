@@ -11,10 +11,12 @@ In particular, we hope to start enabling simple refactorings with [exacto knife]
 * Toggle test file
 * Consolidate Aliases
 * Expand Aliases
+* Sort Aliases
+* Rename (Variable)
 
 ## Requirements
 
-* Exacto knife
+* You will need to install [Exacto Knife](https://github.com/jeremylightsmith/exacto_knife) into your project
 
 ## Extension Settings
 
